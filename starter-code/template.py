@@ -65,6 +65,20 @@ def call_openai(
         client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
         # response.usage contains input_tokens and output_tokens (prompt_tokens/completion_tokens)
     """
+    from openai import OpenAI 
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    start = time.time()
+    response = client.chat.completions.create(
+        model=OPENAI_MINI_MODEL,
+        messages=[
+            {"role": "user", "content": "xin chào"}
+        ],
+    )
+    latency = time.time() - start
+
+
+
+
     # TODO: Import OpenAI, instantiate client, call chat.completions.create with parameters,
     #       measure execution start/end time, extract text and token usage, and return them.
     raise NotImplementedError("Implement call_openai")
@@ -113,6 +127,22 @@ def call_gemini(
         Ensure your usage dictionary extracts 'input_tokens' and 'output_tokens' 
         from the response metadata (e.g. response.usage_metadata).
     """
+    from google import genai 
+    from google.genai import types
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    config = types.GenerateContentConfig(
+        temperature=temperature,
+        top_p=top_p,
+        max_output_tokens=max_tokens
+    )
+    response = client.models.generate_content(
+        model = model,
+        contents = prompt,
+        config=config
+    )
+
+
+
     # TODO: Initialize Gemini client, set config parameters, call generate_content,
     #       measure latency, extract response text and usage metadata, and return the tuple.
     raise NotImplementedError("Implement call_gemini")
